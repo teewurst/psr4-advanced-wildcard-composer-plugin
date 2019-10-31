@@ -1,0 +1,38 @@
+{
+    "name": "teewurst/psr4-advanced-wildcard-composer-plugin",
+    "description": "Adds a parser to enable composer, to be used with wildcards",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martin Ruf",
+            "email": "Martin.Ruf@rerp.de"
+        }
+    ],
+    "extra": {
+        "class": "teewurst\\Prs4AdvancedWildcardComposer\\Plugin"
+    },
+    "autoload": {
+      "psr-4": {
+          "teewurst\\Prs4AdvancedWildcardComposer\\": "src"
+      }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "teewurst\\Prs4AdvancedWildcardComposer\\tests\\": "tests"
+        }
+    },
+    "require": {
+        "composer-plugin-api": "^1.1",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.4",
+        "phpstan/phpstan": "^0.11.19",
+        "composer/composer": "^1.9"
+    },
+    "scripts": {
+      "analyse": "phpstan analyse -l 4 src tests",
+        "test": "phpunit -c phpunit.xml"
+    }
+}

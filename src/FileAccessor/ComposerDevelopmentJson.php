@@ -9,7 +9,7 @@ namespace teewurst\Prs4AdvancedWildcardComposer\FileAccessor;
  * @package teewurst\Prs4AdvancedWildcardComposer\FileAccessor
  * @author  Martin Ruf <Martin.Ruf@check24.de>
  */
-class ComposerJsonDevelopment
+class ComposerDevelopmentJson
 {
 
     private const DEFAULT_PATH_TO_COMPOSER_JSON_FILE = '../composer.json';
@@ -36,7 +36,7 @@ class ComposerJsonDevelopment
         string $relative_composer_json_path = self::DEFAULT_PATH_TO_COMPOSER_JSON_FILE,
         string $relative_composer_development_json_path = self::DEFAULT_PATH_TO_COMPOSER_DEVELOPMENT_JSON_FILE
     ) {
-        $this->vendorPath = ltrim($vendorPath, ['/', '\\']);
+        $this->vendorPath = rtrim($vendorPath, '/\\');
         $this->relative_composer_json_path = $relative_composer_json_path;
         $this->relative_composer_development_json_path = $relative_composer_development_json_path;
     }

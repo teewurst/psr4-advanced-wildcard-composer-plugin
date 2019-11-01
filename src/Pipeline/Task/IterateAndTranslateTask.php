@@ -28,32 +28,16 @@ class IterateAndTranslateTask implements TaskInterface
     public function __invoke(Payload $payload, Pipeline $pipeline): Payload
     {
         $advancedWildcards = $payload->getAdvancedWildcards();
-        $psr4Definitions = $payload->getFullPsr4Definitions();
+        $psr4Definitions = $payload->getPsr4Definitions();
 
-        $newDefinitions = [];
-        foreach ($advancedWildcards as $nameSpace) {
-            foreach ($psr4Definitions[$nameSpace] as $replacementPath) {
-                foreach ($this->getMatchingFolders($replacementPath) as $file) {
-                    // get regex to read values from $file
-                    $pattern = $this->getRegexFromGlob($replacementPath);
+        $psr4Definitions = $this->replaceNamespaces($advancedWildcards, $psr4Definitions);
+        $payload->setPsr4Definitions($psr4Definitions);
 
-                    // read values from path
-                    preg_match_all($pattern, $file, $matches);
+        $advancedWildcards = $payload->getDevAdvancedWildcards();
+        $psr4Definitions = $payload->getDevPsr4Definitions();
 
-                    // remove full match
-                    unset($matches[0]);
-
-                    // fill namespace and add path
-                    $newDefinitions[sprintf($nameSpace, ...$matches)][] = $file;
-                }
-
-                unset($psr4Definitions[$nameSpace]);
-            }
-        }
-
-        $psr4Definitions = array_merge_recursive($psr4Definitions, $newDefinitions);
-
-        $payload->setFullPsr4Definitions($psr4Definitions);
+        $psr4Definitions = $this->replaceNamespaces($advancedWildcards, $psr4Definitions);
+        $payload->setDevPsr4Definitions($psr4Definitions);
 
         return $pipeline->handle($payload);
     }
@@ -70,12 +54,55 @@ class IterateAndTranslateTask implements TaskInterface
         return glob($path, GLOB_BRACE | GLOB_ONLYDIR);
     }
 
-    private function getRegexFromGlob($replacementPath): string
+    /**
+     * @param string $replacementPath
+     * @return string
+     */
+    private function getRegexFromGlob(string $replacementPath): string
     {
         return '#' . str_replace(
             ['{', '}', '*', ','],
             ['(', ')', '.+', '|'],
             $replacementPath
         ) . '#';
+    }
+
+    /**
+     * @param array $advancedWildcards
+     * @param array $psr4Definitions
+     *
+     * @return array
+     */
+    private function replaceNamespaces(array $advancedWildcards, array $psr4Definitions): array {
+        $newDefinitions = [];
+        foreach ($advancedWildcards as $nameSpace) {
+            $replacementPaths = $psr4Definitions[$nameSpace];
+
+            if (!is_array($replacementPaths)) {
+                $replacementPaths = [$replacementPaths];
+            }
+
+            foreach ($replacementPaths as $replacementPath) {
+                foreach ($this->getMatchingFolders($replacementPath) as $file) {
+                    // get regex to read values from $file
+                    $pattern = $this->getRegexFromGlob($replacementPath);
+
+                    // read values from path
+                    preg_match_all($pattern, $file, $matches);
+
+                    // remove full match
+                    unset($matches[0]);
+
+                    // fill namespace and add path
+                    $newDefinitions[sprintf($nameSpace, ...$matches)][] = $file;
+                }
+            }
+
+            unset($psr4Definitions[$nameSpace]);
+        }
+
+        $psr4Definitions = array_merge_recursive($psr4Definitions, $newDefinitions);
+
+        return $psr4Definitions;
     }
 }

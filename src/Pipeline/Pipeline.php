@@ -16,7 +16,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\TaskInterface;
 class Pipeline
 {
     /** @var TaskInterface[] */
-    private $tasks;
+    private $tasks = [];
 
     /**
      * Adds Tasks to worker
@@ -43,24 +43,10 @@ class Pipeline
             return $payload;
         }
 
-        try {
-            if (!is_callable($task)) {
-                throw new \BadMethodCallException(
-                    'Task ' . get_class($task) . ' is not callable or has invalid Parameter!',
-                    0
-                );
-            }
-            return $task($payload, $this);
-        } catch (\ArgumentCountError $e) {
-            throw new \BadMethodCallException(
-                'Task ' . get_class($task) . ' has an invalid argument count! (Previous Exception is set)',
-                0,
-                $e
-            );
-        }
+        return $task($payload, $this);
     }
 
-    private function next(): TaskInterface
+    private function next(): ?TaskInterface
     {
         return array_shift($this->tasks);
     }

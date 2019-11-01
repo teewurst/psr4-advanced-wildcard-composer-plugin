@@ -10,7 +10,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\FilterAndValidateWildcar
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\GenerateComposerDeveplomentJsonTask;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\IterateAndTranslateTask;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\LoadPsr7AutoloadDefinitionsTask;
-use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\ReplacePsr4AutoloadFileTask;
+use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\ReplacePsr4AutoloadTask;
 
 class PipelineFactory implements FactoryInterface
 {
@@ -22,7 +22,7 @@ class PipelineFactory implements FactoryInterface
         $pipeline->pipe($container->get(LoadPsr7AutoloadDefinitionsTask::class));
         $pipeline->pipe($container->get(FilterAndValidateWildcardsTask::class));
         $pipeline->pipe($container->get(IterateAndTranslateTask::class));
-        $pipeline->pipe($container->get(ReplacePsr4AutoloadFileTask::class));
+        $pipeline->pipe($container->get(ReplacePsr4AutoloadTask::class));
         $pipeline->pipe($container->get(GenerateComposerDeveplomentJsonTask::class));
 
         return $pipeline;

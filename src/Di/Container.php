@@ -13,17 +13,19 @@ namespace teewurst\Prs4AdvancedWildcardComposer\Di;
  */
 class Container
 {
-    private $store = [];
-    private $factories = [];
+    private $store;
+    private $factories;
 
     /**
      * Container constructor.
      *
      * @param array $factories
+     * @param array $store
      */
-    public function __construct($factories = [])
+    public function __construct($factories = [], $store = [])
     {
         $this->factories = $factories;
+        $this->store = $store;
     }
 
     /**
@@ -32,15 +34,15 @@ class Container
      */
     public function get(string $key)
     {
-        if (!$this->has($key) && $this->factories[$key] ?? false) {
+        if (!$this->has($key) && ($this->factories[$key] ?? false)) {
             $this->set($key, (new $this->factories[$key])($this, $key));
         }
-        return $store[$key] ?? null;
+        return $this->store[$key] ?? null;
     }
 
     /**
      * @param string $key
-     * @param        $object
+     * @param mixed $object
      * @return void
      */
     public function set(string $key, $object): void
@@ -54,6 +56,6 @@ class Container
      */
     public function has(string $key): bool
     {
-        return $this->store[$key] ?? false;
+        return (bool)($this->store[$key] ?? false);
     }
 }

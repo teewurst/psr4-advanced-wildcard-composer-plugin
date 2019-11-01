@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task;
 
-use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\ComposerJsonDevelopment;
+use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\ComposerDevelopmentJson;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 
@@ -18,12 +18,12 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 class GenerateComposerDeveplomentJsonTask implements TaskInterface
 {
 
-    /** @var ComposerJsonDevelopment */
+    /** @var ComposerDevelopmentJson */
     private $composerFile;
     /** @var bool */
     private $developmentMode;
 
-    public function __construct(ComposerJsonDevelopment $composerFile, bool $developmentMode = true)
+    public function __construct(ComposerDevelopmentJson $composerFile, bool $developmentMode = true)
     {
         $this->composerFile = $composerFile;
         $this->developmentMode = $developmentMode;
@@ -40,7 +40,7 @@ class GenerateComposerDeveplomentJsonTask implements TaskInterface
     public function __invoke(Payload $payload, Pipeline $pipeline): Payload
     {
         if ($this->developmentMode) {
-            $this->composerFile->setDefinitons($payload->getFullPsr4Definitions());
+            $this->composerFile->setDefinitons($payload->getPsr4Definitions());
             $this->composerFile->persist();
         }
 

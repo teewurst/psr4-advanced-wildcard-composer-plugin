@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task;
 
-use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\Psr4Autoload;
+use Composer\Composer;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 
@@ -18,17 +18,17 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 class LoadPsr7AutoloadDefinitionsTask implements TaskInterface
 {
 
-    /** @var Psr4Autoload */
-    private $autoloadAccessor;
+    /** @var Composer */
+    private $composer;
 
     /**
      * BuildPsr7AutoloadArrayTask constructor.
      *
-     * @param Psr4Autoload $autoloadAccessor
+     * @param Composer $composer
      */
-    public function __construct(Psr4Autoload $autoloadAccessor)
+    public function __construct(Composer $composer)
     {
-        $this->autoloadAccessor = $autoloadAccessor;
+        $this->composer = $composer;
     }
 
     /**
@@ -41,7 +41,17 @@ class LoadPsr7AutoloadDefinitionsTask implements TaskInterface
      */
     public function __invoke(Payload $payload, Pipeline $pipeline): Payload
     {
-        $payload->setFullPsr4Definitions($this->autoloadAccessor->requireCurrentFile());
+        $autoload = $this->composer->getPackage()->getAutoload()['psr-4'] ?? [];
+        $devAutoload = $this->composer->getPackage()->getDevAutoload()['psr-4'] ?? [];
+
+        // if no psr-4 namespaces are set
+        if (!$autoload && !$devAutoload) {
+            // interrupt pipeline
+            return $payload;
+        }
+
+        $payload->setPsr4Definitions($autoload);
+        $payload->setDevPsr4Definitions($devAutoload);
         return $pipeline->handle($payload);
     }
 }

@@ -27,7 +27,46 @@ class FilterAndValidateWildcardsTask implements TaskInterface
      */
     public function __invoke(Payload $payload, Pipeline $pipeline): Payload
     {
-        $psr4Definitions = $payload->getFullPsr4Definitions();
+        $psr4Definitions = $payload->getPsr4Definitions();
+        $advancedWildcards = $this->findWildcards($psr4Definitions);
+
+        $devPsr4Definitions = $payload->getDevPsr4Definitions();
+        $devAdvancedWildcards = $this->findWildcards($devPsr4Definitions);
+
+        // if empty interrupt pipe
+        if (!$devAdvancedWildcards && !$advancedWildcards) {
+            return $payload;
+        }
+
+        $payload->setAdvancedWildcards($advancedWildcards);
+        $payload->setDevAdvancedWildcards($devAdvancedWildcards);
+
+        return $pipeline->handle($payload);
+    }
+
+    /**
+     * @param string $className
+     *
+     * @return int
+     */
+    private function countStringReplacements(string $className): int
+    {
+        return preg_match_all('/%s|%\d\$s/', $className, $nameMatches);
+    }
+
+    private function validate(string $folder, int $nameMatches): bool
+    {
+        $count = preg_match_all('/{[^}]*}/', $folder);
+        return $count === $nameMatches;
+    }
+
+    /**
+     * @param array $psr4Definitions
+     *
+     * @return array
+     */
+    private function findWildcards(array $psr4Definitions): array
+    {
         $advancedWildcards = [];
 
         foreach ($psr4Definitions as $nameSpace => $folders) {
@@ -35,6 +74,10 @@ class FilterAndValidateWildcardsTask implements TaskInterface
             // check if there are any advanced wildcards
             if (!$countStringReplacements = $this->countStringReplacements($nameSpace)) {
                 continue;
+            }
+
+            if (!is_array($folders)) {
+                $folders = [$folders];
             }
 
             // check each folder of namespace, if it fits the replacement count
@@ -50,30 +93,6 @@ class FilterAndValidateWildcardsTask implements TaskInterface
             $advancedWildcards[] = $nameSpace;
         }
 
-        // if empty interrupt pipe
-        if (count($advancedWildcards) === 0) {
-            return $payload;
-        }
-
-        $payload->setAdvancedWildcards($advancedWildcards);
-        $payload->setFullPsr4Definitions($psr4Definitions);
-
-        return $pipeline->handle($payload);
-    }
-
-    /**
-     * @param $className
-     *
-     * @return int
-     */
-    private function countStringReplacements($className): int
-    {
-        return preg_match_all('/%s|%\d\$s/', $className, $nameMatches);
-    }
-
-    private function validate(string $folder, int $nameMatches): bool
-    {
-        $count = preg_match_all('/{[^}]*}/', $folder);
-        return $count === $nameMatches;
-    }
+        return $advancedWildcards;
+}
 }

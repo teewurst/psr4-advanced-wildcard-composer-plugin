@@ -32,7 +32,7 @@
         "composer/composer": "^1.9"
     },
     "scripts": {
-      "analyse": "phpstan analyse -l 4 src tests",
+        "analyse": "phpstan analyse -l 4 src",
         "test": "phpunit -c phpunit.xml"
     }
 }

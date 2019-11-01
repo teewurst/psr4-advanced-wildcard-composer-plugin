@@ -13,17 +13,21 @@ class Payload
 {
 
     /** @var array */
-    private $fullPsr4Definitons;
+    private $par4Definitions = [];
     /** @var array */
-    private $advancedWildcards;
+    private $devPar4Definitions = [];
+    /** @var array */
+    private $advancedWildcards = [];
+    /** @var array */
+    private $devAdvancedWildcards = [];
 
     /**
      * @param array $psr4Definitions
      * @return void
      */
-    public function setFullPsr4Definitions(array $psr4Definitions): void
+    public function setPsr4Definitions(array $psr4Definitions): void
     {
-        $this->fullPsr4Definitons = $psr4Definitions;
+        $this->par4Definitions = $psr4Definitions;
     }
 
     /**
@@ -31,9 +35,9 @@ class Payload
      *
      * @return array
      */
-    public function getFullPsr4Definitions(): array
+    public function getPsr4Definitions(): array
     {
-        return $this->fullPsr4Definitons;
+        return $this->par4Definitions;
     }
 
     /**
@@ -53,5 +57,41 @@ class Payload
     public function getAdvancedWildcards(): array
     {
         return $this->advancedWildcards;
+    }
+
+    /**
+     * @param array $devPar4Definitions
+     * @return void
+     */
+    public function setDevPsr4Definitions(array $devPar4Definitions): void
+    {
+        $this->devPar4Definitions = $devPar4Definitions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDevPsr4Definitions(): array
+    {
+        return $this->devPar4Definitions;
+    }
+
+    /**
+     * @param array $devAdvancedWildcards
+     * @return void
+     */
+    public function setDevAdvancedWildcards(array $devAdvancedWildcards): void
+    {
+        $this->devAdvancedWildcards = $devAdvancedWildcards;
+    }
+
+    /**
+     * Returns field DevAdvancedWildcards
+     *
+     * @return array
+     */
+    public function getDevAdvancedWildcards(): array
+    {
+        return $this->devAdvancedWildcards;
     }
 }

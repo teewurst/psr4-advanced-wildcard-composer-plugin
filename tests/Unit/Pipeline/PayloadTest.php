@@ -6,6 +6,12 @@ namespace teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Pipeline;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class PayloadTest
+ *
+ * @package teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Pipeline
+ * @author  Martin Ruf <Martin.Ruf@check24.de>
+ */
 class PayloadTest extends TestCase
 {
 

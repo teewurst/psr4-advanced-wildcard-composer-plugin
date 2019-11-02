@@ -6,6 +6,8 @@ namespace teewurst\Prs4AdvancedWildcardComposer\Pipeline;
 /**
  * Class Payload
  *
+ * Payload to be passed though the handlers of Pipeline
+ *
  * @package teewurst\Prs4AdvancedWildcardComposer\Pipeline
  * @author  Martin Ruf <Martin.Ruf@check24.de>
  */

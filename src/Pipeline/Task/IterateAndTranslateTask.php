@@ -21,6 +21,12 @@ class IterateAndTranslateTask implements TaskInterface
     /** @var callable */
     private $globCallback;
 
+    /**
+     * IterateAndTranslateTask constructor.
+     *
+     * @param string        $vendorDir
+     * @param callable|null $globCallback
+     */
     public function __construct(string $vendorDir, callable $globCallback = null)
     {
         if ($globCallback === null) {
@@ -59,7 +65,7 @@ class IterateAndTranslateTask implements TaskInterface
     }
 
     /**
-     * Recursively iterate through all folders for given structure
+     * Uses callback to generate matching folders
      *
      * @param string $path
      *
@@ -71,6 +77,8 @@ class IterateAndTranslateTask implements TaskInterface
     }
 
     /**
+     * Translate a glob pattern to regex pattern
+     *
      * @param string $replacementPath
      * @return string
      */
@@ -84,6 +92,8 @@ class IterateAndTranslateTask implements TaskInterface
     }
 
     /**
+     * Uses Wildcards to find folders and replace filler of folder and namespace
+     *
      * @param array $advancedWildcards
      * @param array $psr4Definitions
      *

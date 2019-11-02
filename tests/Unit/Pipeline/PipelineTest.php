@@ -8,6 +8,12 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 use PHPUnit\Framework\TestCase;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\TaskInterface;
 
+/**
+ * Class PipelineTest
+ *
+ * @package teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Pipeline
+ * @author  Martin Ruf <Martin.Ruf@check24.de>
+ */
 class PipelineTest extends TestCase
 {
 

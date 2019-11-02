@@ -13,6 +13,12 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 use teewurst\Prs4AdvancedWildcardComposer\Plugin;
 
+/**
+ * Class PluginTest
+ *
+ * @package teewurst\Prs4AdvancedWildcardComposer\tests\Unit
+ * @author  Martin Ruf <Martin.Ruf@check24.de>
+ */
 class PluginTest extends TestCase
 {
 

@@ -8,6 +8,12 @@ use teewurst\Prs4AdvancedWildcardComposer\Di\InvokableFactory;
 use PHPUnit\Framework\TestCase;
 use teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Di\stub\TestFactory;
 
+/**
+ * Class InvokableFactoryTest
+ *
+ * @package teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Di
+ * @author  Martin Ruf <Martin.Ruf@check24.de>
+ */
 class InvokableFactoryTest extends TestCase
 {
 

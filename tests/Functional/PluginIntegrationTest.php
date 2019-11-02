@@ -13,6 +13,12 @@ use Composer\Script\ScriptEvents;
 use PHPStan\Testing\TestCase;
 use teewurst\Prs4AdvancedWildcardComposer\Plugin;
 
+/**
+ * Class PluginIntegrationTest
+ *
+ * @package teewurst\Prs4AdvancedWildcardComposer\tests\Functional
+ * @author  Martin Ruf <Martin.Ruf@check24.de>
+ */
 class PluginIntegrationTest extends TestCase
 {
     private const INTEGRATION_TEST_CONFIG_PATH = __DIR__ . '/../../src/config.php';
@@ -79,7 +85,12 @@ class PluginIntegrationTest extends TestCase
         self::assertSame('teewurst/integration-test', $file['name']);
     }
 
-    public function pluginData()
+    /**
+     * Returns use-cases
+     *
+     * @return array
+     */
+    public function pluginData(): array
     {
         return [
             'default test production case' => [

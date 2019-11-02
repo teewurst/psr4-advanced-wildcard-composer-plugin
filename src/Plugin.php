@@ -54,6 +54,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getSubscribedEvents()
     {
         return array(
@@ -61,6 +64,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         );
     }
 
+    /**
+     * Creates Di Container + Execute Pipeline
+     *
+     * @param Event $event
+     *
+     * @return bool
+     */
     public function translateAdvancedHooks(Event $event)
     {
         /** @var Pipeline|null $pipeline */

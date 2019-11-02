@@ -43,11 +43,23 @@ class ComposerDevelopmentJson
         $this->relative_composer_development_json_path = $relative_composer_development_json_path;
     }
 
-    public function setPayload(Payload $payload)
+    /**
+     * Adds payload to be persisted
+     *
+     * @param Payload $payload
+     *
+     * @return void
+     */
+    public function setPayload(Payload $payload): void
     {
         $this->payload = $payload;
     }
 
+    /**
+     * Copys json file and replaces psr-4 contents
+     *
+     * @return void
+     */
     public function persist()
     {
         $contents = json_decode(

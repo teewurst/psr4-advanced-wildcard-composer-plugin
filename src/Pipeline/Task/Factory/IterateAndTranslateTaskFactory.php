@@ -8,6 +8,12 @@ use teewurst\Prs4AdvancedWildcardComposer\Di\Container;
 use teewurst\Prs4AdvancedWildcardComposer\Di\FactoryInterface;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\IterateAndTranslateTask;
 
+/**
+ * Class IterateAndTranslateTaskFactory
+ *
+ * @package teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\Factory
+ * @author  Martin Ruf <Martin.Ruf@check24.de>
+ */
 class IterateAndTranslateTaskFactory implements FactoryInterface
 {
 
@@ -17,7 +23,7 @@ class IterateAndTranslateTaskFactory implements FactoryInterface
      * @param Container $container
      * @param string    $name
      *
-     * @return object
+     * @return IterateAndTranslateTask
      */
     public function __invoke(Container $container, string $name): object
     {

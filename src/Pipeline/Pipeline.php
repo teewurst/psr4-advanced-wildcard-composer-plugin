@@ -46,6 +46,11 @@ class Pipeline
         return $task($payload, $this);
     }
 
+    /**
+     * Shifts Task from array and returns it
+     *
+     * @return TaskInterface|null
+     */
     private function next(): ?TaskInterface
     {
         return array_shift($this->tasks);

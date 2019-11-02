@@ -6,8 +6,6 @@ namespace teewurst\Prs4AdvancedWildcardComposer;
 use teewurst\Prs4AdvancedWildcardComposer\Di\InvokableFactory;
 use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\ComposerDevelopmentJson;
 use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\Factory\ComposerDevelopmentJsonFactory;
-use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\Factory\Psr4AutloadFactory;
-use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\Psr4Autoload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Factory\PipelineFactory;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;

@@ -7,6 +7,12 @@ use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\ComposerDevelopmentJson;
 use PHPUnit\Framework\TestCase;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 
+/**
+ * Class ComposerDevelopmentJsonTest
+ *
+ * @package teewurst\Prs4AdvancedWildcardComposer\tests\Unit\FileAccessor
+ * @author  Martin Ruf <Martin.Ruf@check24.de>
+ */
 class ComposerDevelopmentJsonTest extends TestCase
 {
 

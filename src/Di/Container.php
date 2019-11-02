@@ -29,6 +29,8 @@ class Container
     }
 
     /**
+     * Get stored class or create it by configuration
+     *
      * @param string $key
      * @return mixed|null
      */
@@ -41,6 +43,8 @@ class Container
     }
 
     /**
+     * Sets object in storage
+     *
      * @param string $key
      * @param mixed $object
      * @return void
@@ -51,6 +55,8 @@ class Container
     }
 
     /**
+     * Check store for key
+     *
      * @param string $key
      * @return bool
      */

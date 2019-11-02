@@ -7,6 +7,12 @@ use PHPUnit\Framework\TestCase;
 use teewurst\Prs4AdvancedWildcardComposer\Di\Container;
 use teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Di\stub\TestFactory;
 
+/**
+ * Class ContainerTest
+ *
+ * @package teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Di
+ * @author  Martin Ruf <Martin.Ruf@check24.de>
+ */
 class ContainerTest extends TestCase
 {
 

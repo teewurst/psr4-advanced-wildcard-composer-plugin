@@ -12,9 +12,23 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\IterateAndTranslateTask;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\LoadPsr7AutoloadDefinitionsTask;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\ReplacePsr4AutoloadTask;
 
+/**
+ * Class PipelineFactory
+ *
+ * @package teewurst\Prs4AdvancedWildcardComposer\Pipeline\Factory
+ * @author  Martin Ruf <Martin.Ruf@check24.de>
+ */
 class PipelineFactory implements FactoryInterface
 {
 
+    /**
+     * Creates an Instance of Pipeline and adds tasks
+     *
+     * @param Container $container
+     * @param string    $name
+     *
+     * @return Pipeline
+     */
     public function __invoke(Container $container, string $name): object
     {
         $pipeline = new Pipeline();

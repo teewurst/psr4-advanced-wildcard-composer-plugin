@@ -33,6 +33,7 @@
     },
     "scripts": {
         "analyse": "phpstan analyse -l 4 src",
-        "test": "phpunit -c phpunit.xml"
+        "test": "phpunit -c phpunit.xml",
+        "coverage": "phpunit -c phpunit.xml --coverage-clover=coverage.xml"
     }
 }

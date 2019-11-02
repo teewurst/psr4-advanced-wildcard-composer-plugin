@@ -17,6 +17,20 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 class IterateAndTranslateTask implements TaskInterface
 {
 
+    /** @var callable */
+    private $globCallback;
+
+    public function __construct(callable $globCallback = null)
+    {
+        if ($globCallback === null) {
+            $globCallback = function ($path) {
+                return glob($path, GLOB_BRACE | GLOB_ONLYDIR);
+            };
+        }
+
+        $this->globCallback = $globCallback;
+    }
+
     /**
      * Iterates all Advanced Key/Value Pairs + finds an structures Class names accordingly
      *
@@ -49,9 +63,9 @@ class IterateAndTranslateTask implements TaskInterface
      *
      * @return array
      */
-    private function getMatchingFolders(string $path): array
+    private function getMatchingFolders(string $path): ?array
     {
-        return glob($path, GLOB_BRACE | GLOB_ONLYDIR);
+        return ($this->globCallback)($path);
     }
 
     /**
@@ -83,18 +97,20 @@ class IterateAndTranslateTask implements TaskInterface
             }
 
             foreach ($replacementPaths as $replacementPath) {
-                foreach ($this->getMatchingFolders($replacementPath) as $file) {
-                    // get regex to read values from $file
+                $matchingFolders = $this->getMatchingFolders($replacementPath);
+                foreach ($matchingFolders as $folder) {
+                    // get regex to read values from $folder
                     $pattern = $this->getRegexFromGlob($replacementPath);
 
                     // read values from path
-                    preg_match_all($pattern, $file, $matches);
+                    preg_match_all($pattern, $folder, $matches);
 
                     // remove full match
                     unset($matches[0]);
+                    $matches = array_merge(...$matches);
 
                     // fill namespace and add path
-                    $newDefinitions[sprintf($nameSpace, ...$matches)][] = $file;
+                    $newDefinitions[sprintf($nameSpace, ...$matches)][] = $folder;
                 }
             }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1572730817">
-  <project timestamp="1572730817">
+<coverage generated="1572731080">
+  <project timestamp="1572731080">
     <package name="teewurst\Prs4AdvancedWildcardComposer\Di">
       <file name="C:\Users\martin.ruf\projects\sonstiges\psr4-wildcard-composer-plugin\src\Di\Container.php">
         <class name="teewurst\Prs4AdvancedWildcardComposer\Di\Container" namespace="teewurst\Prs4AdvancedWildcardComposer\Di" fullPackage="teewurst" package="teewurst">

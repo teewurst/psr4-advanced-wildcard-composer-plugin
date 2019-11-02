@@ -1,5 +1,6 @@
 # psr4-advanced-wildcard-composer-plugin
 Adds a parser to enable composer, to be used with wildcards
+[![codecov](https://codecov.io/gh/teewurst/psr4-advanced-wildcard-composer-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/teewurst/psr4-advanced-wildcard-composer-plugin)
 
 ### How to use
 

@@ -103,7 +103,11 @@ class IterateAndTranslateTask implements TaskInterface
                     $pattern = $this->getRegexFromGlob($replacementPath);
 
                     // read values from path
-                    preg_match_all($pattern, $folder, $matches);
+                    preg_match_all(
+                        str_replace('\\', '/', $pattern),
+                        str_replace('\\', '/', $folder),
+                        $matches
+                    );
 
                     // remove full match
                     unset($matches[0]);

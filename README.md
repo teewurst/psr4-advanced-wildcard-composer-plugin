@@ -1,4 +1,4 @@
-# psr4-wildcard-composer-plugin
+# psr4-advanced-wildcard-composer-plugin
 Adds a parser to enable composer, to be used with wildcards
 
 ### How to use
@@ -12,6 +12,9 @@ Both glob and sprintf are used to dynamically replace content of the generated a
 - IDEs cant handle Advanced Wildcards in composer.json (File creation, namespace auto-complete etc.)
     - if you run in --dev mode, it will generate a composer.development.json at the same location
     - it is a exact copy of composer.json, but resolved wildcards
+- There are two ways of configuration in your composer.json (equivalent to autoload-dev)
+    - (Recommended) You add your wildcards to ``extra.teewurst/psr4-advanced-wildcard-composer-plugin.autoload.psr-4`` (see example)
+    - You set ``extra.teewurst/psr4-advanced-wildcard-composer-plugin`` to a truthy value and set your namespaces in your default ``autoload.psr-4``
 
 ### Example
 
@@ -19,9 +22,18 @@ composer.json:
 
 ````json
 {
-  "autoload": {
-    "psr-4-wildcard": {
-      "My\\Namespace\\%s\\%s\\": "modules/{*Domain,*Module}/{*}/src"
+  "extra": {
+    "teewurst/psr4-advanced-wildcard-composer-plugin": {
+      "autoload": {
+        "psr-4": {
+          "My\\Namespace\\%s\\%s\\": "modules/{*Domain,*Module}/{*}/src"
+        }
+      },
+      "autoload-dev": {
+        "psr-4": {
+          /* Namespaces */
+        }
+      }
     }
   }
 }
@@ -67,7 +79,7 @@ Be aware that...
 
 - Glob/IO and performance? No, No, No... dump-autoload will take a bit longer
 - This plugin is limited to one folder level per namespace replacement (Oh boy, it would escalate quickly)
-- You will get wired results, if folders do not exist 
+- You will get weired results, if folders do not exist 
 
 ## Contribute
 

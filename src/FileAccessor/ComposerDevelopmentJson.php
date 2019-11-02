@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace teewurst\Prs4AdvancedWildcardComposer\FileAccessor;
 
+use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
+
 /**
  * Class ComposerJsonDevelopment
  *
@@ -17,8 +19,8 @@ class ComposerDevelopmentJson
 
     /** @var string */
     private $vendorPath;
-    /** @var array */
-    private $psr4Definitions;
+    /** @var Payload */
+    private $payload;
     /** @var string */
     private $relative_composer_json_path;
     /** @var string */
@@ -41,9 +43,9 @@ class ComposerDevelopmentJson
         $this->relative_composer_development_json_path = $relative_composer_development_json_path;
     }
 
-    public function setDefinitons(array $psr4Definitions)
+    public function setPayload(Payload $payload)
     {
-        $this->psr4Definitions = $psr4Definitions;
+        $this->payload = $payload;
     }
 
     public function persist()
@@ -54,7 +56,8 @@ class ComposerDevelopmentJson
             ),
             true
         );
-        $contents['autoload']['psr-4'] = $this->psr4Definitions;
+        $contents['autoload']['psr-4'] = $this->payload->getPsr4Definitions();
+        $contents['autoload-dev']['psr-4'] = $this->payload->getDevPsr4Definitions();
 
         file_put_contents(
             $this->vendorPath . DIRECTORY_SEPARATOR . $this->relative_composer_development_json_path,

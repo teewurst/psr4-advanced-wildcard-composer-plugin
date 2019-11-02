@@ -20,16 +20,36 @@ class LoadPsr7AutoloadDefinitionsTaskTest extends TestCase
      */
     public function checkIfTaskLoadsDefinitionsIntoPayload()
     {
-        $expected = [
-            'Namespace' => 'files'
-        ];
         $array = [
-            'psr-4' => $expected
+            'psr-4' => [
+                'Namespace' => 'files'
+            ]
+        ];
+
+        $extra = [
+            'teewurst/psr4-advanced-wildcard-composer-plugin' => [
+                'autoload-dev' => [
+                    'psr-4' => [
+                        'My' => 'folder'
+                    ]
+                ],
+                'autoload' => [
+                    'psr-4' => [
+                        'My' => 'folder'
+                    ]
+                ],
+            ]
+        ];
+
+        $expected = [
+            'My' => 'folder',
+            'Namespace' => 'files'
         ];
 
         $package = $this->prophesize(RootPackage::class);
         $package->getDevAutoload()->willReturn($array);
         $package->getAutoload()->willReturn($array);
+        $package->getExtra()->willReturn($extra);
 
         $composer = $this->prophesize(Composer::class);
         $composer->getPackage()->willReturn($package->reveal());
@@ -56,8 +76,7 @@ class LoadPsr7AutoloadDefinitionsTaskTest extends TestCase
         ];
 
         $package = $this->prophesize(RootPackage::class);
-        $package->getDevAutoload()->willReturn($array);
-        $package->getAutoload()->willReturn($array);
+        $package->getExtra()->willReturn([]);
 
         $composer = $this->prophesize(Composer::class);
         $composer->getPackage()->willReturn($package->reveal());

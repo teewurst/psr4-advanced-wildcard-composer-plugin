@@ -5,6 +5,7 @@ namespace teewurst\Prs4AdvancedWildcardComposer\tests\Unit\FileAccessor;
 
 use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\ComposerDevelopmentJson;
 use PHPUnit\Framework\TestCase;
+use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 
 class ComposerDevelopmentJsonTest extends TestCase
 {
@@ -27,15 +28,21 @@ class ComposerDevelopmentJsonTest extends TestCase
      */
     public function checkIfCreatesCopyOfComposerJsonFileButWithOwnPsr4Definitions()
     {
-        $composerDev = new ComposerDevelopmentJson(__DIR__ . '/files/vendor');
-
-        $composerDev->setDefinitons([
+        $definitionsArray = [
             '\\New\\NameSpace' => 'best/file/ever'
-        ]);
+        ];
+
+        $payload = $this->prophesize(Payload::class);
+        $payload->getPsr4Definitions()->willReturn($definitionsArray);
+        $payload->getDevPsr4Definitions()->willReturn($definitionsArray);
+
+        $composerDev = new ComposerDevelopmentJson(__DIR__ . '/files/vendor');
+        $composerDev->setPayload($payload->reveal());
         $composerDev->persist();
 
         $fileContents = json_decode(file_get_contents(__DIR__ . '/files/composer.development.json'), true);
         self::assertSame('project', $fileContents['type'] ?? '');
         self::assertSame('best/file/ever', $fileContents['autoload']['psr-4']['\\New\\NameSpace'] ?? '');
+        self::assertSame('best/file/ever', $fileContents['autoload-dev']['psr-4']['\\New\\NameSpace'] ?? '');
     }
 }

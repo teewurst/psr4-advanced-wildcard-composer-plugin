@@ -41,14 +41,17 @@ class LoadPsr7AutoloadDefinitionsTask implements TaskInterface
      */
     public function __invoke(Payload $payload, Pipeline $pipeline): Payload
     {
-        $autoload = $this->composer->getPackage()->getAutoload()['psr-4'] ?? [];
-        $devAutoload = $this->composer->getPackage()->getDevAutoload()['psr-4'] ?? [];
+        $rootPackage = $this->composer->getPackage();
+        $pluginConfig = $rootPackage->getExtra()['teewurst/psr4-advanced-wildcard-composer-plugin'] ?? false;
 
-        // if no psr-4 namespaces are set
-        if (!$autoload && !$devAutoload) {
+        // if no config is set
+        if (!$pluginConfig) {
             // interrupt pipeline
             return $payload;
         }
+
+        $autoload = ($rootPackage->getAutoload()['psr-4'] ?? []) + $pluginConfig['autoload']['psr-4'] ?? [];
+        $devAutoload = ($rootPackage->getDevAutoload()['psr-4'] ?? []) + $pluginConfig['autoload-dev']['psr-4'] ?? [];
 
         $payload->setPsr4Definitions($autoload);
         $payload->setDevPsr4Definitions($devAutoload);

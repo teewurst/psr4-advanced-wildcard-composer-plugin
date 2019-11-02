@@ -40,7 +40,7 @@ class GenerateComposerDeveplomentJsonTask implements TaskInterface
     public function __invoke(Payload $payload, Pipeline $pipeline): Payload
     {
         if ($this->developmentMode) {
-            $this->composerFile->setDefinitons($payload->getPsr4Definitions());
+            $this->composerFile->setPayload($payload);
             $this->composerFile->persist();
         }
 

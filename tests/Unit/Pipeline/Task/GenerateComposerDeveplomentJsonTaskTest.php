@@ -20,7 +20,7 @@ class GenerateComposerDeveplomentJsonTaskTest extends TestCase
     public function checkIfHandlerIsCalledIfNoDevelopmentMode()
     {
         $composerFileAccessor = $this->prophesize(ComposerDevelopmentJson::class);
-        $composerFileAccessor->setDefinitons(Argument::any())->shouldNotBeCalled();
+        $composerFileAccessor->setPayload(Argument::any())->shouldNotBeCalled();
         $composerFileAccessor->persist()->shouldNotBeCalled();
 
         $payload = $this->prophesize(Payload::class);
@@ -41,12 +41,11 @@ class GenerateComposerDeveplomentJsonTaskTest extends TestCase
     {
         $definitions = [];
 
-        $composerFileAccessor = $this->prophesize(ComposerDevelopmentJson::class);
-        $composerFileAccessor->setDefinitons($definitions)->shouldBeCalled()->hasReturnVoid();
-        $composerFileAccessor->persist()->shouldBeCalled()->hasReturnVoid();
-
         $payload = $this->prophesize(Payload::class);
-        $payload->getPsr4Definitions()->willReturn($definitions);
+
+        $composerFileAccessor = $this->prophesize(ComposerDevelopmentJson::class);
+        $composerFileAccessor->setPayload($payload->reveal())->shouldBeCalled()->hasReturnVoid();
+        $composerFileAccessor->persist()->shouldBeCalled()->hasReturnVoid();
 
         $pipeline = $this->prophesize(Pipeline::class);
         $pipeline->handle($payload->reveal())->willReturn($payload->reveal());

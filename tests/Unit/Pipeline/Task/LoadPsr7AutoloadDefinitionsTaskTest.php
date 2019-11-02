@@ -10,6 +10,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\LoadPsr7AutoloadDefinitionsTask;
 use PHPUnit\Framework\TestCase;
+use teewurst\Prs4AdvancedWildcardComposer\Plugin;
 
 class LoadPsr7AutoloadDefinitionsTaskTest extends TestCase
 {
@@ -27,7 +28,7 @@ class LoadPsr7AutoloadDefinitionsTaskTest extends TestCase
         ];
 
         $extra = [
-            'teewurst/psr4-advanced-wildcard-composer-plugin' => [
+            Plugin::NAME => [
                 'autoload-dev' => [
                     'psr-4' => [
                         'My' => 'folder'

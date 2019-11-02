@@ -21,6 +21,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
+    public const NAME = 'teewurst/psr4-advanced-wildcard-composer-plugin';
 
     /** @var Composer */
     private $composer;

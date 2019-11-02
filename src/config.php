@@ -12,6 +12,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Factory\PipelineFactory;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\Factory\GenerateComposerDeveplomentJsonTaskFactory;
+use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\Factory\IterateAndTranslateTaskFactory;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\Factory\LoadPsr7AutoloadDefinitionsTaskFactory;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\Factory\ReplacePsr4AutoloadTaskFactory;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\FilterAndValidateWildcardsTask;
@@ -27,7 +28,7 @@ return [
     // tasks
     FilterAndValidateWildcardsTask::class      => InvokableFactory::class,
     GenerateComposerDeveplomentJsonTask::class => GenerateComposerDeveplomentJsonTaskFactory::class,
-    IterateAndTranslateTask::class             => InvokableFactory::class,
+    IterateAndTranslateTask::class             => IterateAndTranslateTaskFactory::class,
     LoadPsr7AutoloadDefinitionsTask::class     => LoadPsr7AutoloadDefinitionsTaskFactory::class,
     ReplacePsr4AutoloadTask::class             => ReplacePsr4AutoloadTaskFactory::class,
 

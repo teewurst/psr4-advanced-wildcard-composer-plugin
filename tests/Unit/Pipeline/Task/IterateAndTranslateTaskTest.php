@@ -36,15 +36,13 @@ class IterateAndTranslateTaskTest extends TestCase
         $pipeline = $this->prophesize(Pipeline::class);
         $pipeline->handle($payload->reveal())->willReturn($payload->reveal());
 
-        $current = 0;
-
-        $function = function ($path) use ($folder, &$current) {
+        $function = function ($path) use ($folder) {
             return $folder[$path] ?? [];
         };
 
 
 
-        $task = new IterateAndTranslateTask($function);
+        $task = new IterateAndTranslateTask('path', $function);
         $task($payload->reveal(), $pipeline->reveal());
     }
 

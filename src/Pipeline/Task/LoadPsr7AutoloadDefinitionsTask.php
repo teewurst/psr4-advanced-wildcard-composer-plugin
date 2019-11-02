@@ -6,6 +6,7 @@ namespace teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task;
 use Composer\Composer;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
+use teewurst\Prs4AdvancedWildcardComposer\Plugin;
 
 /**
  * Class BuildPsr7AutoloadArrayTask
@@ -42,7 +43,7 @@ class LoadPsr7AutoloadDefinitionsTask implements TaskInterface
     public function __invoke(Payload $payload, Pipeline $pipeline): Payload
     {
         $rootPackage = $this->composer->getPackage();
-        $pluginConfig = $rootPackage->getExtra()['teewurst/psr4-advanced-wildcard-composer-plugin'] ?? false;
+        $pluginConfig = $rootPackage->getExtra()[Plugin::NAME] ?? false;
 
         // if no config is set
         if (!$pluginConfig) {

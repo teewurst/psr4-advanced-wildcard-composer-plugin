@@ -1,0 +1,13 @@
+{
+  "name": "teewurst/integration-test",
+  "autoload": {
+    "psr-4": {
+      "teewurst\\Prs4AdvancedWildcardComposer\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "teewurst\\Prs4AdvancedWildcardComposer\\tests\\": "tests"
+    }
+  }
+}

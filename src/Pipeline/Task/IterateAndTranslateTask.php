@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task;
 
+use Composer\Composer;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 
@@ -20,11 +21,12 @@ class IterateAndTranslateTask implements TaskInterface
     /** @var callable */
     private $globCallback;
 
-    public function __construct(callable $globCallback = null)
+    public function __construct(string $vendorDir, callable $globCallback = null)
     {
         if ($globCallback === null) {
-            $globCallback = function ($path) {
-                return glob($path, GLOB_BRACE | GLOB_ONLYDIR);
+            $globCallback = function ($path) use ($vendorDir) {
+                $pattern = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, dirname($vendorDir) . DIRECTORY_SEPARATOR . $path);
+                return glob($pattern, GLOB_BRACE | GLOB_ONLYDIR);
             };
         }
 

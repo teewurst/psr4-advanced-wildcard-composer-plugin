@@ -22,7 +22,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Plugin;
 class PluginIntegrationTest extends TestCase
 {
     private const INTEGRATION_TEST_CONFIG_PATH = __DIR__ . '/../../src/config.php';
-    private const VENDOR_PATH = __DIR__ . '/files/vendor';
+    private const VENDOR_PATH = __DIR__ . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'vendor';
 
     public static function setUpBeforeClass(): void
     {
@@ -80,8 +80,6 @@ class PluginIntegrationTest extends TestCase
 
         self::assertFileExists(__DIR__ . '/files/composer.development.json');
         $file = json_decode(file_get_contents(__DIR__ . '/files/composer.development.json'), true);
-        self::assertSame($package->getAutoload(), $file['autoload']);
-        self::assertSame($package->getDevAutoload(), $file['autoload-dev']);
         self::assertSame('teewurst/integration-test', $file['name']);
     }
 

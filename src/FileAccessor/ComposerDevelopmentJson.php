@@ -14,8 +14,8 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 class ComposerDevelopmentJson
 {
 
-    private const DEFAULT_PATH_TO_COMPOSER_JSON_FILE = '../composer.json';
-    private const DEFAULT_PATH_TO_COMPOSER_DEVELOPMENT_JSON_FILE = '../composer.development.json';
+    const DEFAULT_PATH_TO_COMPOSER_JSON_FILE = '../composer.json';
+    const DEFAULT_PATH_TO_COMPOSER_DEVELOPMENT_JSON_FILE = '../composer.development.json';
 
     /** @var string */
     private $vendorPath;
@@ -50,7 +50,7 @@ class ComposerDevelopmentJson
      *
      * @return void
      */
-    public function setPayload(Payload $payload): void
+    public function setPayload(Payload $payload)
     {
         $this->payload = $payload;
     }
@@ -68,8 +68,8 @@ class ComposerDevelopmentJson
             ),
             true
         );
-        $contents['autoload']['psr-4'] = $this->payload->getPsr4Definitions();
-        $contents['autoload-dev']['psr-4'] = $this->payload->getDevPsr4Definitions();
+        $contents['autoload']['psr-4'] = $this->cleanPSR4Definitions($this->payload->getPsr4Definitions());
+        $contents['autoload-dev']['psr-4'] = $this->cleanPSR4Definitions($this->payload->getDevPsr4Definitions());
 
         file_put_contents(
             $this->vendorPath . DIRECTORY_SEPARATOR . $this->relative_composer_development_json_path,
@@ -78,5 +78,28 @@ class ComposerDevelopmentJson
                 JSON_PRETTY_PRINT
             )
         );
+    }
+
+    private function cleanPSR4Definitions(array $psr4Definitions): array
+    {
+        array_walk_recursive(
+            $psr4Definitions,
+            function (&$value) {
+                $rootPath = dirname($this->vendorPath);
+                $value = str_replace($rootPath, '', $value);
+                $value = trim($value, '\/');
+            }
+        );
+
+        array_walk(
+            $psr4Definitions,
+            function (&$value) {
+                if (is_array($value) && count($value) === 1) {
+                    $value = $value[0];
+                }
+            }
+        );
+
+        return $psr4Definitions;
     }
 }

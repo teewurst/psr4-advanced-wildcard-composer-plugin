@@ -34,15 +34,17 @@ class ComposerDevelopmentJsonTest extends TestCase
      */
     public function checkIfCreatesCopyOfComposerJsonFileButWithOwnPsr4Definitions()
     {
+        $vendor = __DIR__ . DIRECTORY_SEPARATOR .  'files' . DIRECTORY_SEPARATOR . 'vendor';
         $definitionsArray = [
-            '\\New\\NameSpace' => 'best/file/ever'
+            '\\New\\NameSpace'   => 'best/file/ever',
+            '\\Other\\NameSpace' => dirname($vendor) . '/best/file/ever',
         ];
 
         $payload = $this->prophesize(Payload::class);
         $payload->getPsr4Definitions()->willReturn($definitionsArray);
         $payload->getDevPsr4Definitions()->willReturn($definitionsArray);
 
-        $composerDev = new ComposerDevelopmentJson(__DIR__ . '/files/vendor');
+        $composerDev = new ComposerDevelopmentJson($vendor);
         $composerDev->setPayload($payload->reveal());
         $composerDev->persist();
 
@@ -50,5 +52,7 @@ class ComposerDevelopmentJsonTest extends TestCase
         self::assertSame('project', $fileContents['type'] ?? '');
         self::assertSame('best/file/ever', $fileContents['autoload']['psr-4']['\\New\\NameSpace'] ?? '');
         self::assertSame('best/file/ever', $fileContents['autoload-dev']['psr-4']['\\New\\NameSpace'] ?? '');
+        self::assertSame('best/file/ever', $fileContents['autoload']['psr-4']['\\Other\\NameSpace'] ?? '');
+        self::assertSame('best/file/ever', $fileContents['autoload-dev']['psr-4']['\\Other\\NameSpace'] ?? '');
     }
 }

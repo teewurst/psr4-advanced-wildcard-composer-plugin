@@ -29,7 +29,7 @@ class PipelineFactory implements FactoryInterface
      *
      * @return Pipeline
      */
-    public function __invoke(Container $container, string $name): object
+    public function __invoke(Container $container, string $name)
     {
         $pipeline = new Pipeline();
 

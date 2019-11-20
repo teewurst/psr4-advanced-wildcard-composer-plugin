@@ -25,7 +25,7 @@ class ReplacePsr4AutoloadTaskFactory implements FactoryInterface
      *
      * @return ReplacePsr4AutoloadTask
      */
-    public function __invoke(Container $container, string $name): object
+    public function __invoke(Container $container, string $name)
     {
         return new ReplacePsr4AutoloadTask($container->get(Composer::class));
     }

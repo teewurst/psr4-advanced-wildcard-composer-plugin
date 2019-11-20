@@ -17,7 +17,7 @@ class TestFactory implements FactoryInterface
      *
      * @return object
      */
-    public function __invoke(Container $container, string $name): object
+    public function __invoke(Container $container, string $name)
     {
         return new \stdClass;
     }

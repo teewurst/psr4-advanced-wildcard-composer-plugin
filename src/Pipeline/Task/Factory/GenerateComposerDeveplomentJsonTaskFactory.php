@@ -26,7 +26,7 @@ class GenerateComposerDeveplomentJsonTaskFactory implements FactoryInterface
      *
      * @return GenerateComposerDeveplomentJsonTask
      */
-    public function __invoke(Container $container, string $name): object
+    public function __invoke(Container $container, string $name)
     {
         /** @var Event $event */
         $event = $container->get(Event::class);

@@ -3,6 +3,12 @@ Adds a parser to enable composer, to be used with wildcards
 
 [![codecov](https://codecov.io/gh/teewurst/psr4-advanced-wildcard-composer-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/teewurst/psr4-advanced-wildcard-composer-plugin)
 
+### How to install
+We need to install the composer plugin api
+``composer require composer-plugin-api``
+Now we are able to require 
+``composer require teewurst/psr4-advanced-wildcard-composer-plugin``
+
 ### How to use
 
 Both glob and sprintf are used to dynamically replace content of the generated autoload file:

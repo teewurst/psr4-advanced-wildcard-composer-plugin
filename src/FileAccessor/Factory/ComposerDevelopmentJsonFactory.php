@@ -25,7 +25,7 @@ class ComposerDevelopmentJsonFactory implements FactoryInterface
      *
      * @return object
      */
-    public function __invoke(Container $container, string $name): object
+    public function __invoke(Container $container, string $name)
     {
         /** @var Composer $composer */
         $composer = $container->get(Composer::class);

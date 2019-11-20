@@ -25,7 +25,7 @@ class LoadPsr7AutoloadDefinitionsTaskFactory implements FactoryInterface
      *
      * @return LoadPsr7AutoloadDefinitionsTask
      */
-    public function __invoke(Container $container, string $name): object
+    public function __invoke(Container $container, string $name)
     {
         return new LoadPsr7AutoloadDefinitionsTask($container->get(Composer::class));
     }

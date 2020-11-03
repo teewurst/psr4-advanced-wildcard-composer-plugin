@@ -64,6 +64,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         );
     }
 
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+        // for composer v2 support
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+        // for composer v2 support
+    }
+
     /**
      * Creates Di Container + Execute Pipeline
      *
@@ -73,7 +83,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function translateAdvancedHooks(Event $event)
     {
-        /** @var Pipeline|null $pipeline */
         $container = $this->getDiContainer();
 
         // set classes for DI

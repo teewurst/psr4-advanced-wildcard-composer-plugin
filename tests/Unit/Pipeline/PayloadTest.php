@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Pipeline;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use PHPUnit\Framework\TestCase;
 
@@ -14,6 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class PayloadTest extends TestCase
 {
+    use ProphecyTrait;
 
     /**
      * @test

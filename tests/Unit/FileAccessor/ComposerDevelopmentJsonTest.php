@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace teewurst\Prs4AdvancedWildcardComposer\tests\Unit\FileAccessor;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\ComposerDevelopmentJson;
 use PHPUnit\Framework\TestCase;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
@@ -15,6 +16,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
  */
 class ComposerDevelopmentJsonTest extends TestCase
 {
+    use ProphecyTrait;
 
     public static function setUpBeforeClass(): void
     {

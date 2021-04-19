@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Di;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use teewurst\Prs4AdvancedWildcardComposer\Di\Container;
 use teewurst\Prs4AdvancedWildcardComposer\Di\InvokableFactory;
 use PHPUnit\Framework\TestCase;
@@ -16,6 +17,7 @@ use teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Di\stub\TestFactory;
  */
 class InvokableFactoryTest extends TestCase
 {
+    use ProphecyTrait;
 
     /**
      * @test

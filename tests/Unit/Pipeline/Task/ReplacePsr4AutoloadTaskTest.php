@@ -5,6 +5,7 @@ namespace teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Pipeline\Task;
 
 use Composer\Composer;
 use Composer\Package\RootPackage;
+use Prophecy\PhpUnit\ProphecyTrait;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\ReplacePsr4AutoloadTask;
@@ -12,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class ReplacePsr4AutoloadTaskTest extends TestCase
 {
+    use ProphecyTrait;
 
     /**
      * @test

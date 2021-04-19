@@ -11,6 +11,7 @@ use Composer\Package\RootPackage;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use PHPStan\Testing\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use teewurst\Prs4AdvancedWildcardComposer\Plugin;
 
 /**
@@ -21,6 +22,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Plugin;
  */
 class PluginIntegrationTest extends TestCase
 {
+    use ProphecyTrait;
     private const INTEGRATION_TEST_CONFIG_PATH = __DIR__ . '/../../src/config.php';
     private const VENDOR_PATH = __DIR__ . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'vendor';
 

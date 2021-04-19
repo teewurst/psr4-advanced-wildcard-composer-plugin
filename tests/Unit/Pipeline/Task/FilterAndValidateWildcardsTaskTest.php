@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Pipeline\Task;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\FilterAndValidateWildcardsTask;
@@ -11,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class FilterAndValidateWildcardsTaskTest extends TestCase
 {
+    use ProphecyTrait;
 
     /**
      * @test
@@ -65,9 +67,7 @@ class FilterAndValidateWildcardsTaskTest extends TestCase
         $payload->getPsr4Definitions()->willReturn($definitionsArray);
         $payload->getDevPsr4Definitions()->willReturn($definitionsArray);
 
-        /** @noinspection PhpParamsInspection */
         $payload->setAdvancedWildcards(Argument::any())->shouldNotBeCalled();
-        /** @noinspection PhpParamsInspection */
         $payload->setDevAdvancedWildcards(Argument::any())->shouldNotBeCalled();
 
         $pipeline = $this->prophesize(Pipeline::class);

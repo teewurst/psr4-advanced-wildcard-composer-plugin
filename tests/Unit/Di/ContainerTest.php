@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Di;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
+use stdClass;
 use teewurst\Prs4AdvancedWildcardComposer\Di\Container;
 use teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Di\stub\TestFactory;
 
@@ -15,6 +17,7 @@ use teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Di\stub\TestFactory;
  */
 class ContainerTest extends TestCase
 {
+    use ProphecyTrait;
 
     /**
      * @test
@@ -64,7 +67,7 @@ class ContainerTest extends TestCase
         $container = new Container(['key' => TestFactory::class]);
 
         $result = $container->get('key');
-        self::assertInstanceOf(\stdClass::class, $result);
+        self::assertInstanceOf(stdClass::class, $result);
         $secondTry = $container->get('key');
         self::assertSame($result, $secondTry);
     }

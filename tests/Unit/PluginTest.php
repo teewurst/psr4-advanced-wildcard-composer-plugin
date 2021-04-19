@@ -8,6 +8,7 @@ use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use teewurst\Prs4AdvancedWildcardComposer\Di\Container;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
@@ -21,7 +22,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Plugin;
  */
 class PluginTest extends TestCase
 {
-
+    use ProphecyTrait;
     /**
      * @test
      * @return void

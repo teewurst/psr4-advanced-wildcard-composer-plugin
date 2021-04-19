@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Pipeline\Task;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use teewurst\Prs4AdvancedWildcardComposer\FileAccessor\ComposerDevelopmentJson;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
@@ -12,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class GenerateComposerDeveplomentJsonTaskTest extends TestCase
 {
+    use ProphecyTrait;
 
     /**
      * @test
@@ -39,8 +41,6 @@ class GenerateComposerDeveplomentJsonTaskTest extends TestCase
      */
     public function checkIfFileIsCreatedOfDelevelopmentMode()
     {
-        $definitions = [];
-
         $payload = $this->prophesize(Payload::class);
 
         $composerFileAccessor = $this->prophesize(ComposerDevelopmentJson::class);

@@ -6,6 +6,7 @@ namespace teewurst\Prs4AdvancedWildcardComposer\tests\Unit\Pipeline\Task;
 use Composer\Composer;
 use Composer\Package\RootPackage;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Payload;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\LoadPsr7AutoloadDefinitionsTask;
@@ -14,6 +15,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Plugin;
 
 class LoadPsr7AutoloadDefinitionsTaskTest extends TestCase
 {
+    use ProphecyTrait;
 
     /**
      * @test
@@ -72,10 +74,6 @@ class LoadPsr7AutoloadDefinitionsTaskTest extends TestCase
      */
     public function checkIfInterruptPipelineOnEmptyPsr4Definition()
     {
-        $array = [
-            'psr-2' => ['llaa' => 'test']
-        ];
-
         $package = $this->prophesize(RootPackage::class);
         $package->getExtra()->willReturn([]);
 
@@ -83,9 +81,7 @@ class LoadPsr7AutoloadDefinitionsTaskTest extends TestCase
         $composer->getPackage()->willReturn($package->reveal());
 
         $payload = $this->prophesize(Payload::class);
-        /** @noinspection PhpParamsInspection */
         $payload->setPsr4Definitions(Argument::any())->shouldNotBeCalled();
-        /** @noinspection PhpParamsInspection */
         $payload->setDevPsr4Definitions(Argument::any())->shouldNotBeCalled();
 
         $pipeline = $this->prophesize(Pipeline::class);

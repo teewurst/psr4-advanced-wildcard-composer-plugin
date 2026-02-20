@@ -18,7 +18,7 @@ use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
 class IterateAndTranslateTask implements TaskInterface
 {
 
-    /** @var callable */
+    /** @var ?callable */
     private $globCallback;
 
     /**
@@ -27,7 +27,7 @@ class IterateAndTranslateTask implements TaskInterface
      * @param string        $vendorDir
      * @param callable|null $globCallback
      */
-    public function __construct(string $vendorDir, callable $globCallback = null)
+    public function __construct(string $vendorDir, ?callable $globCallback = null)
     {
         if ($globCallback === null) {
             $globCallback = function ($path) use ($vendorDir) {

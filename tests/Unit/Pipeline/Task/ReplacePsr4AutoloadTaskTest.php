@@ -30,9 +30,11 @@ class ReplacePsr4AutoloadTaskTest extends TestCase
             'New\\Namespace\\' => 'content'
         ];
 
+        $filesArray = ['app/Helpers/helper1.php'];
         $targetArray = [
             'psr-0' => ['key' => 'value'],
-            'psr-4' => ['New\\Namespace\\' => 'content']
+            'psr-4' => ['New\\Namespace\\' => 'content'],
+            'files' => $filesArray
         ];
 
         $package = $this->prophesize(RootPackage::class);
@@ -47,6 +49,8 @@ class ReplacePsr4AutoloadTaskTest extends TestCase
         $payload = $this->prophesize(Payload::class);
         $payload->getPsr4Definitions()->willReturn($replacementArray);
         $payload->getDevPsr4Definitions()->willReturn($replacementArray);
+        $payload->getFilesDefinitions()->willReturn($filesArray);
+        $payload->getDevFilesDefinitions()->willReturn($filesArray);
 
         $pipeline = $this->prophesize(Pipeline::class);
         $pipeline->handle($payload->reveal())->willReturn($payload->reveal());

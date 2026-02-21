@@ -115,4 +115,34 @@ class PluginTest extends TestCase
         self::assertFalse($plugin->translateAdvancedHooks($event->reveal()));
         self::assertFalse($plugin->translateAdvancedHooks($event->reveal()));
     }
+
+    /**
+     * @test
+     */
+    public function checkIfDeactivateRunsWithoutError()
+    {
+        $composer = $this->prophesize(Composer::class)->reveal();
+        $io = $this->prophesize(IOInterface::class)->reveal();
+
+        $plugin = new Plugin();
+        $plugin->activate($composer, $io);
+        $plugin->deactivate($composer, $io);
+
+        self::assertTrue(true, 'deactivate must not throw');
+    }
+
+    /**
+     * @test
+     */
+    public function checkIfUninstallRunsWithoutError()
+    {
+        $composer = $this->prophesize(Composer::class)->reveal();
+        $io = $this->prophesize(IOInterface::class)->reveal();
+
+        $plugin = new Plugin();
+        $plugin->activate($composer, $io);
+        $plugin->uninstall($composer, $io);
+
+        self::assertTrue(true, 'uninstall must not throw');
+    }
 }

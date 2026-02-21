@@ -51,11 +51,22 @@ class LoadPsr7AutoloadDefinitionsTask implements TaskInterface
             return $payload;
         }
 
-        $autoload = ($rootPackage->getAutoload()['psr-4'] ?? []) + $pluginConfig['autoload']['psr-4'] ?? [];
-        $devAutoload = ($rootPackage->getDevAutoload()['psr-4'] ?? []) + $pluginConfig['autoload-dev']['psr-4'] ?? [];
+        $autoload = ($rootPackage->getAutoload()['psr-4'] ?? []) + ($pluginConfig['autoload']['psr-4'] ?? []);
+        $devAutoload = ($rootPackage->getDevAutoload()['psr-4'] ?? []) + ($pluginConfig['autoload-dev']['psr-4'] ?? []);
+
+        $files = array_merge(
+            $rootPackage->getAutoload()['files'] ?? [],
+            $pluginConfig['autoload']['files'] ?? []
+        );
+        $devFiles = array_merge(
+            $rootPackage->getDevAutoload()['files'] ?? [],
+            $pluginConfig['autoload-dev']['files'] ?? []
+        );
 
         $payload->setPsr4Definitions($autoload);
         $payload->setDevPsr4Definitions($devAutoload);
+        $payload->setFilesDefinitions($files);
+        $payload->setDevFilesDefinitions($devFiles);
         return $pipeline->handle($payload);
     }
 }

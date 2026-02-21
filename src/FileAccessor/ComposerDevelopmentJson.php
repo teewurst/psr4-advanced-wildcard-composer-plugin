@@ -70,6 +70,8 @@ class ComposerDevelopmentJson
         );
         $contents['autoload']['psr-4'] = $this->cleanPSR4Definitions($this->payload->getPsr4Definitions());
         $contents['autoload-dev']['psr-4'] = $this->cleanPSR4Definitions($this->payload->getDevPsr4Definitions());
+        $contents['autoload']['files'] = $this->payload->getFilesDefinitions();
+        $contents['autoload-dev']['files'] = $this->payload->getDevFilesDefinitions();
 
         file_put_contents(
             $this->vendorPath . DIRECTORY_SEPARATOR . $this->relative_composer_development_json_path,

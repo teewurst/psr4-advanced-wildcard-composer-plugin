@@ -45,6 +45,8 @@ class ComposerDevelopmentJsonTest extends TestCase
         $payload = $this->prophesize(Payload::class);
         $payload->getPsr4Definitions()->willReturn($definitionsArray);
         $payload->getDevPsr4Definitions()->willReturn($definitionsArray);
+        $payload->getFilesDefinitions()->willReturn([]);
+        $payload->getDevFilesDefinitions()->willReturn([]);
 
         $composerDev = new ComposerDevelopmentJson($vendor);
         $composerDev->setPayload($payload->reveal());

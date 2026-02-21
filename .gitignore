@@ -1,3 +1,8 @@
 .idea
 /vendor/
 /.phpunit.result.cache
+/composer.lock
+/coverage.xml
+/tests/E2E/project/vendor/
+/tests/E2E/project/composer.lock
+/tests/E2E/project/composer.development.json

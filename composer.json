@@ -24,18 +24,21 @@
     },
     "require": {
         "composer-plugin-api": "^1.1|^2.0",
-        "php": "^7.1|^8.0",
+        "php": "^7.4|^8.0",
         "ext-json": "*"
     },
     "require-dev": {
-        "composer/composer": "^2.0",
-        "phpunit/phpunit": "^9.0",
-        "phpstan/phpstan": "^0.12.52",
+        "composer/composer": "^2.8",
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpstan": "^2.0",
+        "phpspec/prophecy": "^1.16",
         "phpspec/prophecy-phpunit": "^2.0"
     },
     "scripts": {
         "analyse": "phpstan analyse -l 4 src",
-        "test": "phpunit -c phpunit.xml",
-        "coverage": "phpunit -c phpunit.xml --coverage-clover=coverage.xml"
+        "test": "phpunit -c phpunit.xml --testsuite \"Unit and Functional Tests\"",
+        "test:e2e": "phpunit -c phpunit.xml --testsuite E2E",
+        "coverage": "phpunit -c phpunit.xml --testsuite \"Unit and Functional Tests\" --coverage-clover=coverage.xml",
+        "coverage:check": ["@coverage", "php scripts/check-coverage.php"]
     }
 }

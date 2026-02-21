@@ -33,8 +33,11 @@ class FilterAndValidateWildcardsTask implements TaskInterface
         $devPsr4Definitions = $payload->getDevPsr4Definitions();
         $devAdvancedWildcards = $this->findWildcards($devPsr4Definitions);
 
-        // if empty interrupt pipe
-        if (!$devAdvancedWildcards && !$advancedWildcards) {
+        $hasFileWildcards = $this->hasFileWildcards($payload->getFilesDefinitions())
+            || $this->hasFileWildcards($payload->getDevFilesDefinitions());
+
+        // if empty interrupt pipe (no psr-4 wildcards and no file wildcards)
+        if (!$devAdvancedWildcards && !$advancedWildcards && !$hasFileWildcards) {
             return $payload;
         }
 
@@ -94,5 +97,21 @@ class FilterAndValidateWildcardsTask implements TaskInterface
         }
 
         return $advancedWildcards;
-}
+    }
+
+    /**
+     * Check if any file path contains wildcard pattern
+     *
+     * @param array $files
+     * @return bool
+     */
+    private function hasFileWildcards(array $files): bool
+    {
+        foreach ($files as $file) {
+            if (strpos($file, '{') !== false) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

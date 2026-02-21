@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    name: Tests & Coverage
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.2', '8.3', '8.4', '8.5']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: json
+          coverage: pcov
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-${{ matrix.php }}-
+
+      - name: Update dependencies
+        run: composer update --prefer-dist --no-progress
+
+      - name: Run PHPStan
+        run: composer analyse
+
+      - name: Run tests with coverage
+        run: composer coverage
+
+      - name: Validate 100% code coverage
+        run: |
+          COV=$(php -r "
+            \$c = simplexml_load_file('coverage.xml');
+            \$m = \$c->project->metrics;
+            \$stmt = (int)\$m['statements'];
+            \$cov = (int)\$m['coveredstatements'];
+            echo \$stmt > 0 ? round((\$cov/\$stmt)*100, 1) : 100;
+          ")
+          echo "## 🧪 PHP ${{ matrix.php }}: Tests & Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Code Coverage** | ${COV}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Status** | $([ "$COV" = "100" ] && echo '✅ Pass' || echo '❌ Fail') |" >> $GITHUB_STEP_SUMMARY
+          php scripts/check-coverage.php
+
+      - name: Run E2E test
+        run: composer test:e2e
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.xml
+          fail_ci_if_error: false

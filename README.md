@@ -113,12 +113,11 @@ A few things to keep in mind:
 3. Test your changes with `composer dump-autoload`
 4. **xDebug users**: Run `export COMPOSER_ALLOW_XDEBUG=1` in your terminal session
 5. All contributions must pass `composer test` and `composer analyse`
-6. After changing `composer.json`, run `composer update` and commit the updated `composer.lock`
 
 ### CI & Quality
 
 This project uses GitHub Actions for CI. Every push and pull request runs:
-- **Tests** (PHPUnit) on PHP 7.4, 8.0, 8.1, and 8.2
+- **Tests** (PHPUnit) on PHP 7.4, 8.2, 8.3, 8.4, and 8.5
 - **Static analysis** (PHPStan, level 4)
 - **Code coverage** — the build fails if coverage drops below 100%
 

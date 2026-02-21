@@ -140,4 +140,63 @@ class ExpandWildcardFilesTaskTest extends TestCase
         });
         $task($payload, $pipeline->reveal());
     }
+
+    /**
+     * @test
+     */
+    public function checkIfDefaultGlobCallbackExpandsWildcardsWithRealFiles()
+    {
+        $tempDir = sys_get_temp_dir() . '/expand-wildcard-test-' . uniqid();
+        $helpersDir = $tempDir . DIRECTORY_SEPARATOR . 'Helpers';
+        mkdir($helpersDir, 0755, true);
+        file_put_contents($helpersDir . DIRECTORY_SEPARATOR . 'helper1.php', '<?php');
+        file_put_contents($helpersDir . DIRECTORY_SEPARATOR . 'helper2.php', '<?php');
+
+        try {
+            $payload = new Payload();
+            $payload->setFilesDefinitions(['Helpers/{*}.php']);
+            $payload->setDevFilesDefinitions([]);
+
+            $pipeline = $this->prophesize(Pipeline::class);
+            $pipeline->handle(\Prophecy\Argument::type(Payload::class))->willReturn($payload);
+
+            $task = new ExpandWildcardFilesTask($tempDir, null);
+            $task($payload, $pipeline->reveal());
+
+            $files = $payload->getFilesDefinitions();
+            self::assertCount(2, $files);
+            self::assertContains('Helpers/helper1.php', $files);
+            self::assertContains('Helpers/helper2.php', $files);
+        } finally {
+            @unlink($helpersDir . DIRECTORY_SEPARATOR . 'helper1.php');
+            @unlink($helpersDir . DIRECTORY_SEPARATOR . 'helper2.php');
+            @rmdir($helpersDir);
+            @rmdir($tempDir);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function checkIfDefaultGlobCallbackReturnsEmptyWhenGlobFails()
+    {
+        $tempDir = sys_get_temp_dir() . '/expand-wildcard-test-' . uniqid();
+        mkdir($tempDir, 0755, true);
+
+        try {
+            $payload = new Payload();
+            $payload->setFilesDefinitions(['NonExistent/{*}.php']);
+            $payload->setDevFilesDefinitions([]);
+
+            $pipeline = $this->prophesize(Pipeline::class);
+            $pipeline->handle(\Prophecy\Argument::type(Payload::class))->willReturn($payload);
+
+            $task = new ExpandWildcardFilesTask($tempDir, null);
+            $task($payload, $pipeline->reveal());
+
+            self::assertSame([], $payload->getFilesDefinitions());
+        } finally {
+            @rmdir($tempDir);
+        }
+    }
 }

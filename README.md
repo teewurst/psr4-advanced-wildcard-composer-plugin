@@ -1,33 +1,38 @@
-# psr4-advanced-wildcard-composer-plugin
-Adds a parser to enable composer, to be used with wildcards
+# PSR4 Advanced Wildcard Composer Plugin
 
+Adds a parser so Composer can handle wildcards in your autoload configuration. Because listing every single file by hand is so 2015.
+
+[![CI](https://github.com/teewurst/psr4-advanced-wildcard-composer-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/teewurst/psr4-advanced-wildcard-composer-plugin/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/teewurst/psr4-advanced-wildcard-composer-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/teewurst/psr4-advanced-wildcard-composer-plugin)
 
-### How to install
-Now we are able to require 
-``composer require teewurst/psr4-advanced-wildcard-composer-plugin``
+## Installation
 
-### How to use
+```bash
+composer require teewurst/psr4-advanced-wildcard-composer-plugin
+```
 
-Both glob and sprintf are used to dynamically replace content of the generated autoload file:
+## How it works
 
-- Use GLOB Braces to define folder dynamically in your composer.json (Epx.: `"/modules/{*Domain,*Module}/{*}/src"`)
-- Use %s of sprintf to match findings of GLOB to your file path (Exp.: `"My\\Namespace\\%s\\%s\\"`)
-- GLOB is case in/sensitive on linux/windows
-- Also you may use argument switching, but that is not recommended (Exp.: `"My\\Namespace\\%2$s\\%1$s\\"`)
-- IDEs cant handle Advanced Wildcards in composer.json (File creation, namespace auto-complete etc.)
-    - if you run in --dev mode, it will generate a composer.development.json at the same location
-    - it is a exact copy of composer.json, but resolved wildcards
-- There are two ways of configuration in your composer.json (equivalent to autoload-dev)
-    - (Recommended) You add your wildcards to ``extra.teewurst/psr4-advanced-wildcard-composer-plugin.autoload.psr-4`` (see example)
-    - You set ``extra.teewurst/psr4-advanced-wildcard-composer-plugin`` to a truthy value and set your namespaces in your default ``autoload.psr-4``
-- **File autoload wildcards**: You can use wildcards in ``autoload.files`` to automatically include all matching files (e.g. ``"app/Helpers/{*}.php"`` instead of listing each file)
+Glob patterns and `sprintf` team up to dynamically replace content in the generated autoload file:
+
+- **GLOB braces** define folders dynamically (e.g. `"/modules/{*Domain,*Module}/{*}/src"`)
+- **`%s` placeholders** in namespaces match the GLOB findings (e.g. `"My\\Namespace\\%s\\%s\\"`)
+- GLOB is case-insensitive on Linux and Windows
+- Argument switching works too, though we don't recommend it (e.g. `"My\\Namespace\\%2$s\\%1$s\\"`)
+- **IDEs** can't handle advanced wildcards (no auto-complete, no namespace recognition, etc.)
+  - Solution: run Composer in `--dev` mode — it generates a `composer.development.json` with all wildcards resolved. Your IDE will love you for it.
+
+### Configuration options
+
+1. **(Recommended)** Add wildcards to `extra.teewurst/psr4-advanced-wildcard-composer-plugin.autoload.psr-4`
+2. Set `extra.teewurst/psr4-advanced-wildcard-composer-plugin` to a truthy value and use wildcards in your default `autoload.psr-4`
+3. **File autoload wildcards**: Use patterns in `autoload.files` to include matching files automatically (e.g. `"app/Helpers/{*}.php"` instead of listing each file)
 
 ### Example
 
-composer.json:
+**composer.json:**
 
-````json
+```json
 {
   "extra": {
     "teewurst/psr4-advanced-wildcard-composer-plugin": {
@@ -47,11 +52,11 @@ composer.json:
     }
   }
 }
-````
+```
 
-FileSystem:
+**File structure:**
 
-`````
+```
 |- composer.json
 |- modules
    |- BusinessDomain
@@ -65,12 +70,11 @@ FileSystem:
       |- Mysql
          |- src
    |- SomethingElse
-`````
+```
 
-AdvancedWildcards + FileSystem is equivalent:
+**Equivalent to:**
 
-````json
-
+```json
 {
   "autoload": {
     "psr-4": {
@@ -81,30 +85,40 @@ AdvancedWildcards + FileSystem is equivalent:
     }
   }
 }
-````
+```
 
-### Limitations and Performance
+## Limitations & Performance
 
-Be aware that...
+A few things to keep in mind:
 
-- Glob/IO and performance? No, No, No... dump-autoload will take a bit longer
-- This plugin is limited to one folder level per namespace replacement (Oh boy, it would escalate quickly)
-- You will get weired results, if folders do not exist 
+- **Glob/IO/Performance**: Yes, `dump-autoload` will take a bit longer. That's the price of flexibility.
+- **One folder level per replacement**: The plugin is limited to one wildcard level per namespace segment. Adding more would get … interesting.
+- **Non-existent folders**: You'll get weird results if folders don't exist. Create them first.
 
-## Contribute
+## Contributing
 
-- Create any dummy repository locally, setup composer and add to that composer.json:
+1. Create a dummy repository locally and add the plugin as a path dependency:
 
-````json
-    "repositories": [
-      {
-        "type": "path",
-        "version": "dev-[branch_name]",
-        "url": "[path_to_local_wildcard_plugin]/psr4-advanced-wildcard-composer-plugin"
-      },
-    ],
-````
-- in dummy repository, fire `composer require teewurst/psr4-advanced-wildcard-composer-plugin`
-- in dummy repository, you can execute the code by `composer dump-autoload`
-- to enable xDebug, you have to fire `export COMPOSER_ALLOW_XDEBUG=1` (*session* env variable = execute in every terminal)
-- addition needs to pass `composer test` and `composer analyse`
+```json
+"repositories": [
+  {
+    "type": "path",
+    "version": "dev-[branch_name]",
+    "url": "[path_to_local_wildcard_plugin]/psr4-advanced-wildcard-composer-plugin"
+  }
+]
+```
+
+2. Run `composer require teewurst/psr4-advanced-wildcard-composer-plugin` in your dummy repo
+3. Test your changes with `composer dump-autoload`
+4. **xDebug users**: Run `export COMPOSER_ALLOW_XDEBUG=1` in your terminal session
+5. All contributions must pass `composer test` and `composer analyse`
+
+### CI & Quality
+
+This project uses GitHub Actions for CI. Every push and pull request runs:
+- **Tests** (PHPUnit) on PHP 7.4, 8.0, 8.1, and 8.2
+- **Static analysis** (PHPStan, level 4)
+- **Code coverage** — the build fails if coverage drops below 100%
+
+To require a passing build before merging, enable branch protection in your repo settings: *Settings → Branches → Add rule* and require the "Tests & Coverage" check.

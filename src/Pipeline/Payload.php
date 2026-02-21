@@ -19,6 +19,10 @@ class Payload
     /** @var array */
     private $devPar4Definitions = [];
     /** @var array */
+    private $filesDefinitions = [];
+    /** @var array */
+    private $devFilesDefinitions = [];
+    /** @var array */
     private $advancedWildcards = [];
     /** @var array */
     private $devAdvancedWildcards = [];
@@ -59,6 +63,44 @@ class Payload
     public function getAdvancedWildcards(): array
     {
         return $this->advancedWildcards;
+    }
+
+    /**
+     * @param array $filesDefinitions
+     * @return void
+     */
+    public function setFilesDefinitions(array $filesDefinitions): void
+    {
+        $this->filesDefinitions = $filesDefinitions;
+    }
+
+    /**
+     * Returns all file autoload definitions
+     *
+     * @return array
+     */
+    public function getFilesDefinitions(): array
+    {
+        return $this->filesDefinitions;
+    }
+
+    /**
+     * @param array $devFilesDefinitions
+     * @return void
+     */
+    public function setDevFilesDefinitions(array $devFilesDefinitions): void
+    {
+        $this->devFilesDefinitions = $devFilesDefinitions;
+    }
+
+    /**
+     * Returns all dev file autoload definitions
+     *
+     * @return array
+     */
+    public function getDevFilesDefinitions(): array
+    {
+        return $this->devFilesDefinitions;
     }
 
     /**

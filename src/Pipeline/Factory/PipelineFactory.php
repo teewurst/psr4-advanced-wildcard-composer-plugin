@@ -6,6 +6,7 @@ namespace teewurst\Prs4AdvancedWildcardComposer\Pipeline\Factory;
 use teewurst\Prs4AdvancedWildcardComposer\Di\Container;
 use teewurst\Prs4AdvancedWildcardComposer\Di\FactoryInterface;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Pipeline;
+use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\ExpandWildcardFilesTask;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\FilterAndValidateWildcardsTask;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\GenerateComposerDeveplomentJsonTask;
 use teewurst\Prs4AdvancedWildcardComposer\Pipeline\Task\IterateAndTranslateTask;
@@ -36,6 +37,7 @@ class PipelineFactory implements FactoryInterface
         $pipeline->pipe($container->get(LoadPsr7AutoloadDefinitionsTask::class));
         $pipeline->pipe($container->get(FilterAndValidateWildcardsTask::class));
         $pipeline->pipe($container->get(IterateAndTranslateTask::class));
+        $pipeline->pipe($container->get(ExpandWildcardFilesTask::class));
         $pipeline->pipe($container->get(ReplacePsr4AutoloadTask::class));
         $pipeline->pipe($container->get(GenerateComposerDeveplomentJsonTask::class));
 

@@ -21,6 +21,7 @@ Both glob and sprintf are used to dynamically replace content of the generated a
 - There are two ways of configuration in your composer.json (equivalent to autoload-dev)
     - (Recommended) You add your wildcards to ``extra.teewurst/psr4-advanced-wildcard-composer-plugin.autoload.psr-4`` (see example)
     - You set ``extra.teewurst/psr4-advanced-wildcard-composer-plugin`` to a truthy value and set your namespaces in your default ``autoload.psr-4``
+- **File autoload wildcards**: You can use wildcards in ``autoload.files`` to automatically include all matching files (e.g. ``"app/Helpers/{*}.php"`` instead of listing each file)
 
 ### Example
 
@@ -33,7 +34,10 @@ composer.json:
       "autoload": {
         "psr-4": {
           "My\\Namespace\\%s\\%s\\": "modules/{*Domain,*Module}/{*}/src"
-        }
+        },
+        "files": [
+          "app/Helpers/{*}.php"
+        ]
       },
       "autoload-dev": {
         "psr-4": {

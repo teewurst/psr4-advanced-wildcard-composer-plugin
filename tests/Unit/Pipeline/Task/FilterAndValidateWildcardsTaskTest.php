@@ -38,6 +38,8 @@ class FilterAndValidateWildcardsTaskTest extends TestCase
         $payload = $this->prophesize(Payload::class);
         $payload->getPsr4Definitions()->willReturn($definitionsArray);
         $payload->getDevPsr4Definitions()->willReturn($definitionsArray);
+        $payload->getFilesDefinitions()->willReturn([]);
+        $payload->getDevFilesDefinitions()->willReturn([]);
 
         $payload->setAdvancedWildcards($filteredDefinitions)->shouldBeCalled()->hasReturnVoid();
         $payload->setDevAdvancedWildcards($filteredDefinitions)->shouldBeCalled()->hasReturnVoid();
@@ -66,12 +68,40 @@ class FilterAndValidateWildcardsTaskTest extends TestCase
         $payload = $this->prophesize(Payload::class);
         $payload->getPsr4Definitions()->willReturn($definitionsArray);
         $payload->getDevPsr4Definitions()->willReturn($definitionsArray);
+        $payload->getFilesDefinitions()->willReturn([]);
+        $payload->getDevFilesDefinitions()->willReturn([]);
 
         $payload->setAdvancedWildcards(Argument::any())->shouldNotBeCalled();
         $payload->setDevAdvancedWildcards(Argument::any())->shouldNotBeCalled();
 
         $pipeline = $this->prophesize(Pipeline::class);
         $pipeline->handle($payload->reveal())->shouldNotBeCalled();
+
+        $task = new FilterAndValidateWildcardsTask();
+        $task($payload->reveal(), $pipeline->reveal());
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function checkIfFileWildcardsLeadToPipelineContinuation()
+    {
+        $definitionsArray = [
+            'Namespace\\Content\\' => 'file/a'
+        ];
+
+        $payload = $this->prophesize(Payload::class);
+        $payload->getPsr4Definitions()->willReturn($definitionsArray);
+        $payload->getDevPsr4Definitions()->willReturn($definitionsArray);
+        $payload->getFilesDefinitions()->willReturn(['app/Helpers/{*}.php']);
+        $payload->getDevFilesDefinitions()->willReturn([]);
+
+        $payload->setAdvancedWildcards([])->shouldBeCalled()->hasReturnVoid();
+        $payload->setDevAdvancedWildcards([])->shouldBeCalled()->hasReturnVoid();
+
+        $pipeline = $this->prophesize(Pipeline::class);
+        $pipeline->handle($payload->reveal())->willReturn($payload->reveal())->shouldBeCalled();
 
         $task = new FilterAndValidateWildcardsTask();
         $task($payload->reveal(), $pipeline->reveal());

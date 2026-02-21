@@ -49,17 +49,27 @@ class LoadPsr7AutoloadDefinitionsTaskTest extends TestCase
             'Namespace' => 'files'
         ];
 
+        $arrayWithFiles = array_merge($array, ['files' => []]);
         $package = $this->prophesize(RootPackage::class);
-        $package->getDevAutoload()->willReturn($array);
-        $package->getAutoload()->willReturn($array);
+        $package->getDevAutoload()->willReturn($arrayWithFiles);
+        $package->getAutoload()->willReturn($arrayWithFiles);
         $package->getExtra()->willReturn($extra);
 
         $composer = $this->prophesize(Composer::class);
         $composer->getPackage()->willReturn($package->reveal());
 
+        $arrayWithFiles = [
+            'psr-4' => [
+                'Namespace' => 'files'
+            ],
+            'files' => []
+        ];
+
         $payload = $this->prophesize(Payload::class);
         $payload->setPsr4Definitions($expected);
         $payload->setDevPsr4Definitions($expected);
+        $payload->setFilesDefinitions([]);
+        $payload->setDevFilesDefinitions([]);
 
         $pipeline = $this->prophesize(Pipeline::class);
         $pipeline->handle($payload->reveal())->shouldBeCalled()->willReturn($payload->reveal());
@@ -83,6 +93,8 @@ class LoadPsr7AutoloadDefinitionsTaskTest extends TestCase
         $payload = $this->prophesize(Payload::class);
         $payload->setPsr4Definitions(Argument::any())->shouldNotBeCalled();
         $payload->setDevPsr4Definitions(Argument::any())->shouldNotBeCalled();
+        $payload->setFilesDefinitions(Argument::any())->shouldNotBeCalled();
+        $payload->setDevFilesDefinitions(Argument::any())->shouldNotBeCalled();
 
         $pipeline = $this->prophesize(Pipeline::class);
         $pipeline->handle($payload->reveal())->shouldNotBeCalled()->willReturn($payload->reveal());

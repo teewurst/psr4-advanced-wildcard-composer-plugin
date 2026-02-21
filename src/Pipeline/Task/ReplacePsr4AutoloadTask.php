@@ -45,6 +45,9 @@ class ReplacePsr4AutoloadTask implements TaskInterface
         $currentAutoload['psr-4'] = $payload->getPsr4Definitions();
         $currentDevAutoload['psr-4'] = $payload->getDevPsr4Definitions();
 
+        $currentAutoload['files'] = $payload->getFilesDefinitions();
+        $currentDevAutoload['files'] = $payload->getDevFilesDefinitions();
+
         $package->setAutoload($currentAutoload);
         $package->setDevAutoload($currentDevAutoload);
 

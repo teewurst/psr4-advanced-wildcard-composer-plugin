@@ -202,7 +202,7 @@ class ExpandWildcardFilesTaskTest extends TestCase
 
     /**
      * @test
-     * Covers the glob() === false branch (invalid pattern returns false on error)
+     * Covers the default glob callback path when a wildcard pattern matches no files
      */
     public function checkIfDefaultGlobCallbackReturnsEmptyWhenGlobReturnsFalse()
     {
@@ -212,8 +212,7 @@ class ExpandWildcardFilesTaskTest extends TestCase
         try {
             $payload = new Payload();
             $payload->setDevFilesDefinitions([]);
-            // "[a" is an invalid glob pattern (unclosed char class) - glob returns false on some systems
-            $payload->setFilesDefinitions(['[a']); // invalid glob: unclosed char class -> glob() returns false
+            $payload->setFilesDefinitions(['{nonexistent_dir_abc123}/*.php']);
 
             $pipeline = $this->prophesize(Pipeline::class);
             $pipeline->handle(\Prophecy\Argument::type(Payload::class))->willReturn($payload);

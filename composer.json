@@ -28,9 +28,9 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "composer/composer": "^2.0",
+        "composer/composer": "^2.8",
         "phpunit/phpunit": "^9.5",
-        "phpstan/phpstan": "^0.12.52",
+        "phpstan/phpstan": "^2.0",
         "phpspec/prophecy": "^1.16",
         "phpspec/prophecy-phpunit": "^2.0"
     },
@@ -38,6 +38,6 @@
         "analyse": "phpstan analyse -l 4 src",
         "test": "phpunit -c phpunit.xml",
         "coverage": "phpunit -c phpunit.xml --coverage-clover=coverage.xml",
-        "coverage:check": "@coverage && php scripts/check-coverage.php"
+        "coverage:check": ["@coverage", "php scripts/check-coverage.php"]
     }
 }

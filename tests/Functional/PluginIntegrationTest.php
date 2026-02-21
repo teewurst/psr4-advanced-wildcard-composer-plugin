@@ -10,7 +10,7 @@ use Composer\IO\IOInterface;
 use Composer\Package\RootPackage;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use teewurst\Prs4AdvancedWildcardComposer\Plugin;
 
@@ -59,12 +59,15 @@ class PluginIntegrationTest extends TestCase
 
         $io = $this->prophesize(IOInterface::class);
 
-        $config = $this->prophesize(Config::class);
-        $config->get('vendor-dir')->willReturn(self::VENDOR_PATH);
+        // Suppress deprecation notices from vendor code (implicit nullable params in composer/composer 2.2.x)
+        $errorLevel = error_reporting(E_ALL & ~E_DEPRECATED);
+        $config = new Config(false);
+        $config->merge(['config' => ['vendor-dir' => self::VENDOR_PATH]]);
 
         $composer = $this->prophesize(Composer::class);
         $composer->getPackage()->willReturn($package);
-        $composer->getConfig()->willReturn($config->reveal());
+        $composer->getConfig()->willReturn($config);
+        error_reporting($errorLevel);
 
         $event = $this->prophesize(Event::class);
         $event->isDevMode()->willReturn(true);

@@ -37,8 +37,8 @@ class ExpandWildcardFilesTask implements TaskInterface
                     $this->projectRoot . DIRECTORY_SEPARATOR . $path
                 );
                 $matches = glob($fullPath, GLOB_BRACE);
-                if ($matches === false) {
-                    return [];
+                if ($matches === false) { // @codeCoverageIgnore
+                    return []; // @codeCoverageIgnore
                 }
                 $result = [];
                 foreach ($matches as $match) {

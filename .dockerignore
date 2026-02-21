@@ -1,0 +1,6 @@
+vendor/
+.git/
+.github/
+.idea/
+coverage.xml
+.phpunit.result.cache

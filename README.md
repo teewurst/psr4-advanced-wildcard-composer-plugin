@@ -95,6 +95,41 @@ A few things to keep in mind:
 - **One folder level per replacement**: The plugin is limited to one wildcard level per namespace segment. Adding more would get … interesting.
 - **Non-existent folders**: You'll get weird results if folders don't exist. Create them first.
 
+## Development (Docker)
+
+A Docker Compose setup is included so you don't need PHP or Composer installed locally.
+
+```bash
+# Build the image (PHP 8.5 by default)
+docker compose build
+
+# Install dependencies
+docker compose run --rm php install
+
+# Run tests
+docker compose run --rm php test
+
+# Generate coverage report (coverage.xml)
+docker compose run --rm php coverage
+
+# Validate 100% coverage
+docker compose run --rm php coverage:check
+
+# Run static analysis (PHPStan)
+docker compose run --rm php analyse
+
+# Any other Composer command
+docker compose run --rm php update
+docker compose run --rm php require some/package
+```
+
+To use a different PHP version, set `PHP_VERSION` before building:
+
+```bash
+PHP_VERSION=7.4 docker compose build
+PHP_VERSION=7.4 docker compose run --rm php test
+```
+
 ## Contributing
 
 1. Create a dummy repository locally and add the plugin as a path dependency:

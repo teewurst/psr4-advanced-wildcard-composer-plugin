@@ -51,8 +51,8 @@ class LoadPsr7AutoloadDefinitionsTask implements TaskInterface
             return $payload;
         }
 
-        $autoload = ($rootPackage->getAutoload()['psr-4'] ?? []) + $pluginConfig['autoload']['psr-4'] ?? [];
-        $devAutoload = ($rootPackage->getDevAutoload()['psr-4'] ?? []) + $pluginConfig['autoload-dev']['psr-4'] ?? [];
+        $autoload = ($rootPackage->getAutoload()['psr-4'] ?? []) + ($pluginConfig['autoload']['psr-4'] ?? []);
+        $devAutoload = ($rootPackage->getDevAutoload()['psr-4'] ?? []) + ($pluginConfig['autoload-dev']['psr-4'] ?? []);
 
         $files = array_merge(
             $rootPackage->getAutoload()['files'] ?? [],

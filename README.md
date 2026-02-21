@@ -113,6 +113,7 @@ A few things to keep in mind:
 3. Test your changes with `composer dump-autoload`
 4. **xDebug users**: Run `export COMPOSER_ALLOW_XDEBUG=1` in your terminal session
 5. All contributions must pass `composer test` and `composer analyse`
+6. After changing `composer.json`, run `composer update` and commit the updated `composer.lock`
 
 ### CI & Quality
 

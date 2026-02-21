@@ -24,13 +24,14 @@
     },
     "require": {
         "composer-plugin-api": "^1.1|^2.0",
-        "php": "^7.1|^8.0",
+        "php": "^7.4|^8.0",
         "ext-json": "*"
     },
     "require-dev": {
         "composer/composer": "^2.0",
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^9.5",
         "phpstan/phpstan": "^0.12.52",
+        "phpspec/prophecy": "^1.16",
         "phpspec/prophecy-phpunit": "^2.0"
     },
     "scripts": {

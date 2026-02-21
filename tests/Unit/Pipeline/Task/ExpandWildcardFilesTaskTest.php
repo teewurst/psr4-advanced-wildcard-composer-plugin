@@ -178,7 +178,7 @@ class ExpandWildcardFilesTaskTest extends TestCase
     /**
      * @test
      */
-    public function checkIfDefaultGlobCallbackReturnsEmptyWhenGlobFails()
+    public function checkIfDefaultGlobCallbackReturnsEmptyWhenNoMatches()
     {
         $tempDir = sys_get_temp_dir() . '/expand-wildcard-test-' . uniqid();
         mkdir($tempDir, 0755, true);
@@ -195,6 +195,35 @@ class ExpandWildcardFilesTaskTest extends TestCase
             $task($payload, $pipeline->reveal());
 
             self::assertSame([], $payload->getFilesDefinitions());
+        } finally {
+            @rmdir($tempDir);
+        }
+    }
+
+    /**
+     * @test
+     * Covers the glob() === false branch (invalid pattern returns false on error)
+     */
+    public function checkIfDefaultGlobCallbackReturnsEmptyWhenGlobReturnsFalse()
+    {
+        $tempDir = sys_get_temp_dir() . '/expand-wildcard-test-' . uniqid();
+        mkdir($tempDir, 0755, true);
+
+        try {
+            $payload = new Payload();
+            $payload->setDevFilesDefinitions([]);
+            // "[a" is an invalid glob pattern (unclosed char class) - glob returns false on some systems
+            $payload->setFilesDefinitions(['[a']); // invalid glob: unclosed char class -> glob() returns false
+
+            $pipeline = $this->prophesize(Pipeline::class);
+            $pipeline->handle(\Prophecy\Argument::type(Payload::class))->willReturn($payload);
+
+            $task = new ExpandWildcardFilesTask($tempDir, null);
+            $task($payload, $pipeline->reveal());
+
+            $files = $payload->getFilesDefinitions();
+            self::assertIsArray($files);
+            self::assertEmpty($files);
         } finally {
             @rmdir($tempDir);
         }

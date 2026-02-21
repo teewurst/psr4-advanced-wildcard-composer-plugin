@@ -1,0 +1,40 @@
+{
+  "name": "e2e/wildcard-plugin-test",
+  "description": "E2E test project for PSR4 advanced wildcard composer plugin",
+  "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../../..",
+      "options": { "symlink": false }
+    }
+  ],
+  "require": {
+    "teewurst/psr4-advanced-wildcard-composer-plugin": "*"
+  },
+  "extra": {
+    "teewurst/psr4-advanced-wildcard-composer-plugin": {
+      "autoload": {
+        "psr-4": {
+          "My\\Namespace\\%s\\%s\\": "src/module/{*}/{*}/src"
+        },
+        "files": [
+          "app/Helpers/{*}.php"
+        ]
+      },
+      "autoload-dev": {
+        "psr-4": {
+          "My\\Namespace\\Test\\%s\\": "test/{*}/tests"
+        },
+        "files": [
+          "tests/helpers/{*}.php"
+        ]
+      }
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "teewurst/psr4-advanced-wildcard-composer-plugin": true
+    }
+  }
+}

@@ -8,11 +8,17 @@ return [
         'autoload' => [
             'psr-4' => [
                 'My\\Namespace\\%s\\%s' => 'src/module/{*}/{*}/src'
+            ],
+            'files' => [
+                'Helpers/{*}.php'
             ]
         ],
         'autoload-dev' => [
             'psr-4' => [
                 'My\\Namespace\\Test\\%s' => 'test/{*}/tests'
+            ],
+            'files' => [
+                'tests/helpers/{*}.php'
             ]
         ]
     ]

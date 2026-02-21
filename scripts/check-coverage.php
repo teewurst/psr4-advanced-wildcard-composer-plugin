@@ -46,7 +46,43 @@ printf(
 
 if ($stmtCoverage < $threshold || $methodCoverage < $threshold) {
     echo "\n";
-    echo "❌ FAIL: Coverage below {$threshold}% threshold. Write more tests!\n";
+    echo "❌ FAIL: Coverage below {$threshold}% threshold. Write more tests!\n\n";
+    echo "--- Uncovered code (add tests for these) ---\n\n";
+
+    $projectRoot = realpath(__DIR__ . '/..') ?: dirname(__DIR__);
+    foreach ($coverage->xpath('//file') as $file) {
+        $filepath = (string) $file['name'];
+        $normalized = str_replace('\\', '/', $filepath);
+        $relativePath = $filepath;
+        if (strpos($normalized, '/src/') !== false) {
+            $relativePath = 'src/' . substr($normalized, strrpos($normalized, '/src/') + 5);
+        } elseif (strpos($normalized, 'src/') === 0) {
+            $relativePath = $normalized;
+        } elseif (preg_match('#[^/]+/src/(.+)$#', $normalized, $m)) {
+            $relativePath = 'src/' . $m[1];
+        } else {
+            $relativePath = basename($normalized);
+        }
+
+        $uncoveredLines = [];
+        foreach ($file->line as $line) {
+            $count = (int) ($line['count'] ?? -1);
+            $type = (string) ($line['type'] ?? '');
+            if (($type === 'stmt' || $type === 'cond') && $count === 0) {
+                $uncoveredLines[] = (int) $line['num'];
+            }
+        }
+
+        if (!empty($uncoveredLines) && strpos($relativePath, 'src/') === 0) {
+            sort($uncoveredLines);
+            $linesSummary = count($uncoveredLines) <= 10
+                ? implode(', ', $uncoveredLines)
+                : implode(', ', array_slice($uncoveredLines, 0, 8)) . ', ... (+' . (count($uncoveredLines) - 8) . ' more)';
+            echo "  {$relativePath}: lines {$linesSummary}\n";
+        }
+    }
+
+    echo "\nTip: Run 'composer coverage' locally and open coverage report, or add unit tests for the lines above.\n";
     exit(1);
 }
 
